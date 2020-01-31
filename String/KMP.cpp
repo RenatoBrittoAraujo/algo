@@ -4,7 +4,21 @@ using namespace std;
 vector<int> kmp(string &s, string &t, vector<int> &lps)
 {
 	vector<int> rep;
-	
+	int lindx = 0;
+	for (int i = 0; i < s.size(); i++)
+	{
+		while (lindx > 0 and t[lindx] != s[i]) 
+			lindx = lps[lindx - 1];
+		if (t[lindx] == s[i])
+		{
+			lindx++;
+			if (lindx == lps.size()) {
+			      	lindx--;
+	       			rep.push_back(i - t.size() + 1);
+			}
+		}
+	}
+
 	return rep;
 }
 
@@ -31,13 +45,6 @@ int main()
 	string s, t;
 	cin>>s>>t;
 	auto vlps = lps(t);
-	cout<<"LPS: ";
-	for (auto v : vlps) cout<<v<<' ';
-	cout<<endl;
 	auto vkmp = kmp(s, t, vlps);
-	cout<<"MATCHES: ";
-	for (auto v : vkmp) cout<<v<<' ';
-	cout<<endl;
-	
 }
 
